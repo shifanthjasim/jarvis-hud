@@ -59,14 +59,111 @@ const CommandProcessor = (function () {
     });
   }
 
+  /* ---- News Feeds (free RSS-to-JSON, no API key) ---- */
+  const NEWS_FEEDS = {
+    local: [
+      { name: "Ada Derana", url: "https://www.adaderana.lk/rss.php" },
+      { name: "The Island", url: "https://island.lk/feed/" },
+      { name: "EconomyNext", url: "https://economynext.com/feed/" },
+    ],
+    world: [
+      { name: "BBC World", url: "https://feeds.bbci.co.uk/news/world/rss.xml" },
+      { name: "Reuters", url: "https://feeds.reuters.com/reuters/topNews" },
+    ],
+    tech: [
+      { name: "TechCrunch", url: "https://techcrunch.com/feed/" },
+      { name: "The Verge", url: "https://www.theverge.com/rss/index.xml" },
+    ],
+  };
+
+  const RSS_PROXY = "https://api.rss2json.com/v1/api.json?rss_url=";
+
+  async function fetchNews(category) {
+    const feeds = NEWS_FEEDS[category] || NEWS_FEEDS.local;
+    const feed = feeds[Math.floor(Math.random() * feeds.length)];
+
+    try {
+      const response = await fetch(RSS_PROXY + encodeURIComponent(feed.url));
+      const data = await response.json();
+
+      if (data.status === "ok" && data.items && data.items.length > 0) {
+        const headlines = data.items.slice(0, 5);
+        let result = `Here are the latest headlines from ${feed.name}:\n\n`;
+        headlines.forEach((item, i) => {
+          result += `${i + 1}. ${item.title}\n`;
+        });
+        return result;
+      }
+
+      return `I couldn't fetch news from ${feed.name} right now. Try again in a moment.`;
+    } catch (e) {
+      return "I'm having trouble connecting to the news feed. Please check your internet connection and try again.";
+    }
+  }
+
+  /* ---- Weather (free, no API key — wttr.in) ---- */
+  async function fetchWeather(location) {
+    try {
+      const loc = location || "Colombo";
+      const response = await fetch(`https://wttr.in/${encodeURIComponent(loc)}?format=j1`);
+      const data = await response.json();
+
+      const current = data.current_condition[0];
+      const tempC = current.temp_C;
+      const desc = current.weatherDesc[0].value;
+      const humidity = current.humidity;
+      const windKmph = current.windspeedKmph;
+      const feelsLike = current.FeelsLikeC;
+      const area = data.nearest_area[0].areaName[0].value;
+      const country = data.nearest_area[0].country[0].value;
+
+      return `Current weather in ${area}, ${country}: ${desc}, ${tempC}°C (feels like ${feelsLike}°C). Humidity: ${humidity}%. Wind: ${windKmph} km/h.`;
+    } catch (e) {
+      return "I couldn't fetch the weather right now. Please check your internet connection and try again.";
+    }
+  }
+
+  /**
+   * Process input — returns a string OR a Promise<string> for async commands
+   */
   function process(input) {
     const text = input.toLowerCase().trim();
+
+    // News — local/Sri Lanka
+    if (/local news|sri lank(a|an) news|news in sri lanka|lk news|lanka news/i.test(text)) {
+      return fetchNews("local");
+    }
+
+    // News — world
+    if (/world news|global news|international news/i.test(text)) {
+      return fetchNews("world");
+    }
+
+    // News — tech
+    if (/tech news|technology news|tech updates/i.test(text)) {
+      return fetchNews("tech");
+    }
+
+    // News — general (defaults to local)
+    if (/what('?s| is) the news|news|headlines|latest news|read.* news|tell me the news/i.test(text)) {
+      return fetchNews("local");
+    }
+
+    // Weather — with location
+    if (/weather in (.+)/i.test(text)) {
+      const match = text.match(/weather in (.+)/i);
+      return fetchWeather(match[1].trim());
+    }
+
+    // Weather — general (defaults to Colombo, Sri Lanka)
+    if (/weather|temperature outside|how('?s| is) the weather/i.test(text)) {
+      return fetchWeather("Colombo");
+    }
 
     // Time
     if (/what('?s| is) the time|tell me the time|current time|time please|what time is it/i.test(text)) {
       return `The current time is ${getTime()}.`;
     }
-
 
     // Date
     if (/what('?s| is) the date|tell me the date|today'?s date|what day is it|what date is it/i.test(text)) {
@@ -105,7 +202,7 @@ const CommandProcessor = (function () {
 
     // Capabilities
     if (/what can you do|capabilities|help me|what do you do|your abilities/i.test(text)) {
-      return "I can tell you the time, date, share jokes, fun facts, compliments, do math, and have a conversation. Try asking me something!";
+      return "I can tell you the time, date, live news, weather, share jokes, fun facts, compliments, do math, and have a conversation. Try saying 'local news' or 'weather'!";
     }
 
     // Math
@@ -123,11 +220,6 @@ const CommandProcessor = (function () {
       } catch (e) {
         return "I couldn't solve that. Please try a simpler expression.";
       }
-    }
-
-    // Weather (can't actually fetch — just acknowledge)
-    if (/weather|temperature outside|how('?s| is) the weather/i.test(text)) {
-      return "I don't have access to live weather data yet, but I can be upgraded with a weather API in the future.";
     }
 
     // Thank you
@@ -152,9 +244,9 @@ const CommandProcessor = (function () {
 
     // Default fallback
     const fallbacks = [
-      `I heard "${input}", but I'm not sure how to respond to that. Try asking me the time, a joke, or a fact!`,
+      `I heard "${input}", but I'm not sure how to respond to that. Try asking me the time, a joke, news, or weather!`,
       `Interesting. S.H.I.F.A. doesn't have a specific response for that yet, but my capabilities are always expanding.`,
-      `I processed "${input}" but couldn't find a matching command. I can help with time, date, jokes, facts, and math.`,
+      `I processed "${input}" but couldn't find a matching command. I can help with time, date, news, weather, jokes, facts, and math.`,
     ];
 
     return getRandom(fallbacks);

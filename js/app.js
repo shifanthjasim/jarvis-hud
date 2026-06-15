@@ -125,15 +125,26 @@
     typeChar();
   }
 
-  /* ---- Handle User Input ---- */
+  /* ---- Handle User Input (supports async commands like news/weather) ---- */
   function handleInput(text) {
     if (!text.trim()) return;
 
     addLog("user", text);
-    const response = CommandProcessor.process(text);
-    addLog("shifa", response);
-    displayResponse(response);
-    VoiceSystem.speak(response);
+    const result = CommandProcessor.process(text);
+
+    if (result && typeof result.then === "function") {
+      setState("processing");
+      displayResponse("Fetching data...");
+      result.then(function (response) {
+        addLog("shifa", response);
+        displayResponse(response);
+        VoiceSystem.speak(response);
+      });
+    } else {
+      addLog("shifa", result);
+      displayResponse(result);
+      VoiceSystem.speak(result);
+    }
   }
 
   /* ---- Voice System Init ---- */
