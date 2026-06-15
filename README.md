@@ -1,13 +1,15 @@
-# J.A.R.V.I.S. — HUD Interface
+# S.H.I.F.A. — HUD Interface
 
-A fully animated Iron Man–inspired JARVIS heads-up display with voice interaction. Built with pure HTML, CSS, JavaScript, and Canvas — no frameworks, no API keys, 100% free.
+**Smart Holographic Interface For Assistance**
+
+A fully animated Iron Man–inspired HUD with female voice interaction. Built by **Shifanth Jasim** with pure HTML, CSS, JavaScript, and Canvas — no frameworks, no API keys, 100% free.
 
 ## Features
 
 - **Animated HUD** — Rotating arcs, radar sweep with blips, particle field, hexagonal grid, crosshairs, dashed reference circles
 - **Central Orb** — 3D rotating rings with pulsing core, changes color based on state (idle/listening/speaking)
 - **Voice Input** — Speak commands via your microphone (Web Speech API)
-- **Voice Output** — JARVIS responds with a synthesized voice (prefers British accent)
+- **Voice Output** — S.H.I.F.A. responds with a synthesized female voice
 - **System Panels** — Simulated CPU, memory, network, power metrics with animated bars
 - **Voice Log** — Scrolling log of all commands and responses
 - **Typing Effect** — Responses appear with a character-by-character animation
@@ -19,7 +21,7 @@ A fully animated Iron Man–inspired JARVIS heads-up display with voice interact
 
 | Command | Example |
 |---------|---------|
-| **Greetings** | "Hello", "Hey JARVIS", "Good morning" |
+| **Greetings** | "Hello", "Hey Shifa", "Good morning" |
 | **Time** | "What time is it?", "Current time" |
 | **Date** | "What's the date?", "What day is it?" |
 | **Jokes** | "Tell me a joke", "Make me laugh" |
@@ -27,7 +29,7 @@ A fully animated Iron Man–inspired JARVIS heads-up display with voice interact
 | **Math** | "Calculate 25 * 4", "What's 100 / 3?" |
 | **Compliments** | "Say something nice", "Compliment me" |
 | **Status** | "System status", "How are you?" |
-| **Identity** | "What's your name?", "Who made you?" |
+| **Identity** | "What's your name?", "Who built you?" |
 | **Goodbye** | "Goodbye", "See you later" |
 
 ## Quick Start
@@ -61,7 +63,7 @@ jarvis-hud/
 ├── js/
 │   ├── particles.js    # Background particle network
 │   ├── hud-canvas.js   # HUD canvas (arcs, radar, grid, ticks)
-│   ├── voice.js        # Web Speech API wrapper
+│   ├── voice.js        # Web Speech API wrapper (female voice)
 │   ├── commands.js     # Command processor
 │   └── app.js          # Main controller
 └── README.md

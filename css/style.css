@@ -407,7 +407,8 @@ body {
   background: rgba(0, 119, 255, 0.05);
 }
 
-.log-entry--jarvis {
+.log-entry--jarvis,
+.log-entry--shifa {
   border-left-color: var(--cyan);
   background: rgba(0, 246, 255, 0.05);
 }

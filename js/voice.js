@@ -41,17 +41,20 @@ const VoiceSystem = (function () {
       };
     }
 
-    // Find a good voice for JARVIS (prefer a British or deep male voice)
+    // Find a good female voice for S.H.I.F.A.
     function loadVoices() {
       const voices = synth.getVoices();
       if (voices.length === 0) return;
 
-      // Priority: Google UK English Male > any UK Male > any English Male > default
+      // Priority: Google UK English Female > any UK Female > any English Female > default
       const priorities = [
-        (v) => v.name.includes("Google UK English Male"),
-        (v) => v.name.includes("Daniel") && v.lang.startsWith("en"),
-        (v) => v.lang === "en-GB" && v.name.toLowerCase().includes("male"),
-        (v) => v.lang.startsWith("en") && v.name.toLowerCase().includes("male"),
+        (v) => v.name.includes("Google UK English Female"),
+        (v) => v.name.includes("Google US English") && v.name.toLowerCase().includes("female"),
+        (v) => v.name.includes("Samantha") && v.lang.startsWith("en"),
+        (v) => v.name.includes("Karen") && v.lang.startsWith("en"),
+        (v) => v.name.includes("Fiona") && v.lang.startsWith("en"),
+        (v) => v.lang === "en-GB" && v.name.toLowerCase().includes("female"),
+        (v) => v.lang.startsWith("en") && v.name.toLowerCase().includes("female"),
         (v) => v.lang === "en-GB",
         (v) => v.lang.startsWith("en"),
       ];
@@ -106,7 +109,7 @@ const VoiceSystem = (function () {
     synth.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = 1.0;
-    utterance.pitch = 0.9;
+    utterance.pitch = 1.1;
     utterance.volume = 1.0;
 
     if (preferredVoice) {

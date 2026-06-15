@@ -131,7 +131,7 @@
 
     addLog("user", text);
     const response = CommandProcessor.process(text);
-    addLog("jarvis", response);
+    addLog("shifa", response);
     displayResponse(response);
     VoiceSystem.speak(response);
   }
@@ -197,7 +197,7 @@
       setTimeout(() => {
         addLog("system", text);
         if (text.includes("Welcome")) {
-          VoiceSystem.speak("All systems online. Welcome. I am Jarvis, at your service.");
+          VoiceSystem.speak("All systems online. Welcome. I am Shifa, built by Shifanth Jasim, at your service.");
         }
       }, delay);
     });

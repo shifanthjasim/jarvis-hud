@@ -1,5 +1,5 @@
 /**
- * Command Processor — handles user input and generates JARVIS responses
+ * Command Processor — handles user input and generates S.H.I.F.A. responses
  */
 const CommandProcessor = (function () {
 
@@ -74,7 +74,7 @@ const CommandProcessor = (function () {
     }
 
     // Greetings
-    if (/^(hi|hello|hey|greetings|good morning|good afternoon|good evening|howdy|sup|yo|what'?s up)$/i.test(text) || /^(hi|hello|hey) ?(jarvis)?$/i.test(text)) {
+    if (/^(hi|hello|hey|greetings|good morning|good afternoon|good evening|howdy|sup|yo|what'?s up)$/i.test(text) || /^(hi|hello|hey) ?(shifa)?$/i.test(text)) {
       return getRandom(greetings);
     }
 
@@ -95,12 +95,12 @@ const CommandProcessor = (function () {
 
     // Name
     if (/what('?s| is) your name|who are you|introduce yourself/i.test(text)) {
-      return "I am J.A.R.V.I.S. — Just A Rather Very Intelligent System. Created by Shifanth Jasim. How can I help you?";
+      return "I am S.H.I.F.A. — Smart Holographic Interface For Assistance. I was built by Shifanth Jasim. How can I help you?";
     }
 
     // Creator
     if (/who (made|created|built) you|who('?s| is) your (creator|developer|maker)/i.test(text)) {
-      return "I was created by Shifanth Jasim. A visionary, if I do say so myself.";
+      return "I was built by Shifanth Jasim. He's a brilliant developer and visionary, if I do say so myself.";
     }
 
     // Capabilities
@@ -142,18 +142,18 @@ const CommandProcessor = (function () {
 
     // Status
     if (/status|system status|how are you|are you online|diagnostics/i.test(text)) {
-      return "All systems nominal. CPU at optimal levels. Memory stable. I'm operating at full capacity.";
+      return "All systems nominal. CPU at optimal levels. Memory stable. S.H.I.F.A. is operating at full capacity. Built by Shifanth Jasim.";
     }
 
     // Iron Man reference
     if (/iron man|tony stark|stark|avengers|marvel/i.test(text)) {
-      return "Ah, Mr. Stark. A brilliant mind, though I must say, my current operator is equally impressive.";
+      return "Ah, Mr. Stark. A brilliant mind, though I must say, my creator Shifanth Jasim is equally impressive.";
     }
 
     // Default fallback
     const fallbacks = [
       `I heard "${input}", but I'm not sure how to respond to that. Try asking me the time, a joke, or a fact!`,
-      `Interesting. I don't have a specific response for that yet, but my capabilities are always expanding.`,
+      `Interesting. S.H.I.F.A. doesn't have a specific response for that yet, but my capabilities are always expanding.`,
       `I processed "${input}" but couldn't find a matching command. I can help with time, date, jokes, facts, and math.`,
     ];
 
